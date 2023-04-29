@@ -17,6 +17,7 @@
            </v-card>
  
        <v-btn type="submit" block class="mt-2">Submit</v-btn>
+       <v-btn block class="mt-2" color="red" @click="signInWithGoogle">SignIn With Google</v-btn>
      </v-form>
    </v-sheet>
         
@@ -25,16 +26,12 @@
  <script setup>
 import {ref} from 'vue';
 
-import {signInWithEmailAndPassword} from 'firebase/auth';
+import {signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, getAuth} from 'firebase/auth';
 import {auth} from '../firebase/db.js'
 
 import { useRouter } from 'vue-router';
 
 
-
-//  const signInWithGoogle = () => {
-   
-// }
 
 const email = ref("");
 const password = ref("");
@@ -71,6 +68,21 @@ const register = (e) => {
        }
    })
 }
+
+
+const signInWithGoogle = () => {
+   const provider = new GoogleAuthProvider();
+   signInWithPopup(getAuth(), provider)
+   .then((result) => {
+    console.log(result.user);
+    router.push('/todo');
+   })
+   .catch((e) => {
+    console.log(e.code);
+    alert(e.code);
+   })
+}
+
  </script>
  
  
